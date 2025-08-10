@@ -15,6 +15,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import suki.mrhua269.tnbr.i18n.I18NManager
@@ -165,5 +166,22 @@ object NekoPlayerEvents : Listener{
         }
 
         event.renderer(this.playerChatRenderNeko)
+    }
+
+    @EventHandler
+    fun onCreeperTargetNekoPlayer(event: EntityTargetEvent) {
+        val targetReason = event.reason
+        val targetEntity = event.target
+
+        targetEntity?.let {
+            if (targetReason == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
+                val player = targetEntity as Player
+                val playerNekoData = player.getPlayerNekoData()
+
+                if (playerNekoData.isNeko) {
+                    event.isCancelled = true
+                }
+            }
+        }
     }
 }

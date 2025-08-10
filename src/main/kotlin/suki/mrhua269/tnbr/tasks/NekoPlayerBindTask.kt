@@ -1,9 +1,11 @@
 package suki.mrhua269.tnbr.tasks
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import suki.mrhua269.tnbr.ConstantPool
 import suki.mrhua269.tnbr.ToNekoBukkitReforged
 import suki.mrhua269.tnbr.listeners.NekoPlayerEvents.getPlayerNekoData
 import java.util.function.Consumer
@@ -13,6 +15,7 @@ class NekoPlayerBindTask(
 ) : Consumer<ScheduledTask>{
     private var scheduledTask: ScheduledTask? = null
     private var isNekoBefore: Boolean = false
+    private var oldMaxHealth = 0.0
 
     fun schedule() {
         this.scheduledTask = this.player.scheduler.runAtFixedRate(
@@ -31,19 +34,42 @@ class NekoPlayerBindTask(
     override fun accept(t: ScheduledTask) {
         val playerNekoPlayerData = this.player.getPlayerNekoData()
 
-        if (playerNekoPlayerData.isNeko) {
-            this.tickPotionEffect()
+        // handle stats upgrade / downgrade
+        if (playerNekoPlayerData.isNeko && !this.isNekoBefore) {
+            this.prepareNekoStats()
         }
 
         if (!playerNekoPlayerData.isNeko && this.isNekoBefore) {
             this.cleanNekoStats()
         }
 
+        // tick logics
+        if (playerNekoPlayerData.isNeko) {
+            this.tickPotionEffect()
+        }
+
         this.isNekoBefore = playerNekoPlayerData.isNeko
+    }
+
+    internal fun prepareNekoStats() {
+        // set to max health of neko player
+        val attributeInstanceOfMaxHealth = this.player.getAttribute(Attribute.MAX_HEALTH)
+
+        if (attributeInstanceOfMaxHealth != null) {
+            this.oldMaxHealth = attributeInstanceOfMaxHealth.baseValue
+            attributeInstanceOfMaxHealth.baseValue = ConstantPool.NEKO_PLAYER_MAX_HEALTH
+        }
     }
 
     internal fun cleanNekoStats() {
         this.player.removePotionEffect(PotionEffectType.NIGHT_VISION)
+
+        // reset max health to default
+        val attributeInstanceOfMaxHealth = this.player.getAttribute(Attribute.MAX_HEALTH)
+
+        if (attributeInstanceOfMaxHealth != null) {
+            attributeInstanceOfMaxHealth.baseValue = this.oldMaxHealth
+        }
     }
 
     internal fun tickPotionEffect() {

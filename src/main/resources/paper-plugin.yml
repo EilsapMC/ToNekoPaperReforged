@@ -1,7 +1,7 @@
 name: ToNekoBukkitReforged
 version: '0.72.1'
 main: suki.mrhua269.tnbr.ToNekoBukkitReforged
-api-version: '1.21'
+api-version: '1.21.8'
 authors: [ MrHua269, CrystalNeko ]
 description: ToNeko plugin reforged version
 folia-supported: true
