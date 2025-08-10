@@ -16,6 +16,7 @@ class ToNekoBukkitReforged : JavaPlugin() {
         this.saveDefaultConfig()
         this.loadLanguageFile()
 
+
         Bukkit.getPluginManager().registerEvents(NekoPlayerEvents, this)
     }
 

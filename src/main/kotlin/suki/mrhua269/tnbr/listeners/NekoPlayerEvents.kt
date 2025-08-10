@@ -3,7 +3,6 @@ package suki.mrhua269.tnbr.listeners
 import io.papermc.paper.chat.ChatRenderer
 import io.papermc.paper.event.player.AsyncChatEvent
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
@@ -20,13 +19,16 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import suki.mrhua269.tnbr.i18n.I18NManager
 import suki.mrhua269.tnbr.storage.NekoPlayerData
+import suki.mrhua269.tnbr.tasks.NekoPlayerBindTask
 import suki.mrhua269.tnbr.utils.dispatchers.EntityDispatcherImpl
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
+import java.util.function.Function
 
 object NekoPlayerEvents : Listener{
     private val playerChatRenderNeko = PlayerChatRenderNeko()
     private val playerNekoDataCachedMap : MutableMap<UUID, NekoPlayerData> = ConcurrentHashMap()
+    private val playerNekoBindTasks: MutableMap<UUID, NekoPlayerBindTask> = ConcurrentHashMap()
 
     class PlayerChatRenderNeko : ChatRenderer {
         override fun render(
@@ -110,6 +112,12 @@ object NekoPlayerEvents : Listener{
         }
 
         nekoPlayerData.restoreFrom(player)
+
+        val playerNekoTickTask = this.playerNekoBindTasks.computeIfAbsent(player.uniqueId, Function<UUID, NekoPlayerBindTask>{
+            NekoPlayerBindTask(player)
+        })
+
+        playerNekoTickTask.schedule()
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -122,6 +130,8 @@ object NekoPlayerEvents : Listener{
 
             this.playerNekoDataCachedMap.remove(player.uniqueId)
         }
+
+        this.playerNekoBindTasks.remove(player.uniqueId)?.retire()
     }
 
     fun getPlayerNekoDataRaw(player: Player): NekoPlayerData = this.playerNekoDataCachedMap.computeIfAbsent(player.uniqueId){ NekoPlayerData() }

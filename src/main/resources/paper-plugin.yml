@@ -5,3 +5,7 @@ api-version: '1.21'
 authors: [ MrHua269, CrystalNeko ]
 description: ToNeko plugin reforged version
 folia-supported: true
+
+commands:
+  toneko:
+    description: "The toNeko's main command"
