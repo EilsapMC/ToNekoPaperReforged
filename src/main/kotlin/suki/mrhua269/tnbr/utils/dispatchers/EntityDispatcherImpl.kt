@@ -8,13 +8,21 @@ import suki.mrhua269.tnbr.ToNekoBukkitReforged
 import kotlin.coroutines.CoroutineContext
 
 class EntityDispatcherImpl(
-    private val entity: Entity
+    private val entity: Entity,
+    private val runEvenRetired: Boolean
 ) : CoroutineDispatcher() {
     override fun dispatch(context: CoroutineContext, block: Runnable) {
-        this.entity.scheduler.execute(ToNekoBukkitReforged.instance, block, null, 1L)
-    }
+        if (Bukkit.getServer().isStopping) {
+            block.run()
+            return
+        }
 
-    override fun isDispatchNeeded(context: CoroutineContext): Boolean {
-        return Bukkit.isOwnedByCurrentRegion(this.entity)
+        val retired = if (this.runEvenRetired) block else null
+
+        val result = this.entity.scheduler.execute(ToNekoBukkitReforged.instance, block, retired, 1L)
+
+        if (!result && this.runEvenRetired) {
+            block.run()
+        }
     }
 }

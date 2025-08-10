@@ -13,6 +13,10 @@ data class LanguageData(
     val messageNekoPlayerChatFormat: String,
     @SerializedName("message_neko_player_chat_meow")
     val messageNekoPlayerMeow: String,
+    @SerializedName("message_hover_event_of_neko_prefix")
+    val messageHoverEventOfNekoPrefix: String,
+    @SerializedName("message_hover_event_of_neko_no_master")
+    val messageHoverEventOfNekoNoMaster: String,
 ) {
     companion object {
         val GSON: Gson = GsonBuilder().setPrettyPrinting().create()

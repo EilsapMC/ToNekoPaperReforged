@@ -3,10 +3,12 @@ package suki.mrhua269.tnbr.listeners
 import io.papermc.paper.chat.ChatRenderer
 import io.papermc.paper.event.player.AsyncChatEvent
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.TextReplacementConfig
+import net.kyori.adventure.text.event.HoverEvent
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.Bukkit
@@ -38,6 +40,7 @@ object NekoPlayerEvents : Listener{
 
             var replaceConfigBuilder = TextReplacementConfig.builder()
             var shouldReplace = false
+            var masters = ""
 
             // this would be thread safe as we will copy the owners for each modification
             for (ownerUUID in playerNekoPlayerData.owners) {
@@ -48,6 +51,10 @@ object NekoPlayerEvents : Listener{
 
                 target.name?.let {
                     shouldReplace = true
+                    // add to its master list will be present in the hover message
+                    masters += (it + "\t")
+
+                    // replace with master word
                     replaceConfigBuilder = replaceConfigBuilder.matchLiteral(it)
                 }
             }
@@ -65,8 +72,24 @@ object NekoPlayerEvents : Listener{
             // append meow suffix
             val builtMessage = replaced
                 .append(Component.text(languageData.messageNekoPlayerMeow))
+
+            // build master list component
+            val mastersComponent = masters.let {
+                if (it.isBlank()) {
+                    return@let Component.text(languageData.messageHoverEventOfNekoNoMaster)
+                }
+
+                return@let Component.text(it)
+            }
+
             // we need process its prefix from mini message to a true component
-            val processedPrefix = MiniMessage.miniMessage().deserialize(languageData.messageNekoPlayerPrefix)
+            val processedHoverMessage = MiniMessage.miniMessage().deserialize(
+                languageData.messageHoverEventOfNekoPrefix,
+                Placeholder.component("masters", mastersComponent)
+            )
+            val processedPrefix = MiniMessage.miniMessage()
+                .deserialize(languageData.messageNekoPlayerPrefix)
+                .hoverEvent(HoverEvent.showText(processedHoverMessage))
 
             val result = MiniMessage.miniMessage().deserialize(
                 languageData.messageNekoPlayerChatFormat,
@@ -106,11 +129,15 @@ object NekoPlayerEvents : Listener{
     fun Player.getPlayerNekoData(): NekoPlayerData = getPlayerNekoDataRaw(this)
 
     fun saveAllPlayerData() {
-        for (player in Bukkit.getOnlinePlayers()) {
-            runBlocking {
+        runBlocking {
+            for (player in Bukkit.getOnlinePlayers()) {
                 // we might get descheduled when the player gose offline when we're doing that, so just do it async
-                async (EntityDispatcherImpl(player)) {
+                async(EntityDispatcherImpl(player, true)) {
                     val playerNekoData = playerNekoDataCachedMap[player.uniqueId]
+
+                    if (!Bukkit.isOwnedByCurrentRegion(player)) {
+                        return@async
+                    }
 
                     playerNekoData?.storeTo(player)
                 }

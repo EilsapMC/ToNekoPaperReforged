@@ -11,16 +11,16 @@ import java.util.UUID
 
 class NekoPlayerData {
     companion object{
-        private val NEKO_PLAYER_DATA_KEY = warpNamespaceKey("")
-        private val IS_NEKO_SPACE_KEY = warpNamespaceKey("is_neko")
+        private val NEKO_PLAYER_DATA_KEY = warpNamespaceKey(true, "")
+        private val IS_NEKO_SPACE_KEY = warpNamespaceKey(false, "is_neko")
 
-        private val OWNERS_SPACE_KEY = warpNamespaceKey("owners")
+        private val OWNERS_SPACE_KEY = warpNamespaceKey(false, "owners")
         private val OWNERS_DATA_TYPE = PersistentDataType.LIST.listTypeFrom(UUIDPersistentDataType.INSTANCE)
 
-        private fun warpNamespaceKey(field: String): NamespacedKey{
+        private fun warpNamespaceKey(root: Boolean, endPath: String): NamespacedKey{
             return  NamespacedKey(
                 ConstantPool.TO_NEKO_RESOURCE_KEY,
-                field.let { if (field.isBlank()) ConstantPool.TO_NEKO_PLAYER_DATA_RESOURCE_LOCATION_BASE else ConstantPool.TO_NEKO_PLAYER_DATA_RESOURCE_LOCATION_BASE + field }
+                if (root) ConstantPool.TO_NEKO_PLAYER_DATA_RESOURCE_LOCATION_BASE else endPath
             )
         }
     }

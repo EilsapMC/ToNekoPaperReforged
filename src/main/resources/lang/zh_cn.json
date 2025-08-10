@@ -2,5 +2,7 @@
   "message_neko_player_prefix": "[<#f5c2e7>猫娘</#f5c2e7>]",
   "message_neko_master_word": "主人",
   "message_neko_player_chat_format": "<prefix><<player_display_name>><message>",
-  "message_neko_player_chat_meow": "喵~"
+  "message_neko_player_chat_meow": "喵~",
+  "message_hover_event_of_neko_prefix": "主人: <masters>",
+  "message_hover_event_of_neko_no_master": "无"
 }
