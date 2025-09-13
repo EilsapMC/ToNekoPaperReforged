@@ -4,5 +4,9 @@
   "message_neko_player_chat_format": "<prefix><<player_display_name>><message>",
   "message_neko_player_chat_meow": "喵~",
   "message_hover_event_of_neko_prefix": "主人: <masters>",
-  "message_hover_event_of_neko_no_master": "无"
+  "message_hover_event_of_neko_no_master": "无",
+  "message_player_not_found": "<red>未找到该玩家!</red>",
+  "message_item_not_found_give_command": "<red>未找到该物品!</red>",
+  "message_command_wrong_use": "<red>指令用法错误,正常用法如下:</red>",
+  "message_no_permission": "<red>您没有该权限做此事!</red>"
 }

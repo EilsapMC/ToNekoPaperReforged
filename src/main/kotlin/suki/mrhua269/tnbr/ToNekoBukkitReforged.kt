@@ -2,7 +2,10 @@ package suki.mrhua269.tnbr
 
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import suki.mrhua269.tnbr.command.impl.ToNekoGiveCommand
 import suki.mrhua269.tnbr.i18n.I18NManager
+import suki.mrhua269.tnbr.item.ItemRegistryManager
+import suki.mrhua269.tnbr.item.impl.TestItem
 import suki.mrhua269.tnbr.listeners.NekoPlayerEvents
 
 class ToNekoBukkitReforged : JavaPlugin() {
@@ -15,9 +18,22 @@ class ToNekoBukkitReforged : JavaPlugin() {
 
         this.saveDefaultConfig()
         this.loadLanguageFile()
+        this.registerCommands()
 
+        ItemRegistryManager.initAll {
+            this.bootstrapItems()
+        }
 
         Bukkit.getPluginManager().registerEvents(NekoPlayerEvents, this)
+        Bukkit.getPluginManager().registerEvents(ItemRegistryManager, this)
+    }
+
+    private fun registerCommands() {
+        ToNekoGiveCommand.register()
+    }
+
+    private fun bootstrapItems() {
+        ItemRegistryManager.registerItem(TestItem())
     }
 
     private fun loadLanguageFile() {
