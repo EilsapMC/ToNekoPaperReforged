@@ -1,5 +1,5 @@
 # ToNekoBukkitReforged
-一个可以把玩家变成猫娘的<del>Bukkit</del>Paper插件(兼容Folia)
+一个可以把玩家变成猫娘的<del>Bukkit</del>Paper插件(兼容Folia)</br>
 功能和设计参考自原项目: [ToNeko](https://github.com/CSneko/toNeko/)
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/EilsapMC/ToNekoBukkitReforged)
