@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 data class LanguageData(
     @SerializedName("message_neko_player_prefix")
@@ -27,6 +28,13 @@ data class LanguageData(
     val messageItemNotFoundGiveCommand: String,
     @SerializedName("message_no_permission")
     val messageNoPermission: String,
+    @SerializedName("message_neko_set_to_a_neko")
+    val messageNekoSetToANeko: String,
+    @SerializedName("message_neko_set_to_not_a_neko")
+    val messageNekoSetToNotANeko: String,
+    @SerializedName("message_nothing_has_changed")
+    val messageNothingHasChanged: String,
+
 ) {
     companion object {
         val GSON: Gson = GsonBuilder().setPrettyPrinting().create()
@@ -37,6 +45,10 @@ data class LanguageData(
 
         fun miniMessaged(input: String) : Component {
             return MiniMessage.miniMessage().deserialize(input)
+        }
+
+        fun miniMessaged(input: String, tagResolver: TagResolver) : Component {
+            return MiniMessage.miniMessage().deserialize(input, tagResolver)
         }
     }
 }

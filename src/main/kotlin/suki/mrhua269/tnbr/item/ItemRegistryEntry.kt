@@ -1,6 +1,5 @@
 package suki.mrhua269.tnbr.item
 
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.event.player.PlayerInteractEvent

@@ -108,12 +108,14 @@ object NekoPlayerEvents : Listener{
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerJoinEvent(event: PlayerJoinEvent) {
         val player = event.player
+        // read player data
         val nekoPlayerData = this.playerNekoDataCachedMap.computeIfAbsent(player.uniqueId){
             NekoPlayerData()
         }
 
         nekoPlayerData.restoreFrom(player)
 
+        // create tick task for player
         val playerNekoTickTask = this.playerNekoBindTasks.computeIfAbsent(player.uniqueId, Function<UUID, NekoPlayerBindTask>{
             NekoPlayerBindTask(player)
         })
@@ -160,7 +162,7 @@ object NekoPlayerEvents : Listener{
     fun onPlayerChat(event: AsyncChatEvent) {
         val nekoPlayerData = event.player.getPlayerNekoData()
 
-        // skip chat message replacement for neko players
+        // skip chat message replacement for non neko players
         if (!nekoPlayerData.isNeko) {
             return
         }

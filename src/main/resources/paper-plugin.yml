@@ -7,5 +7,7 @@ description: ToNeko plugin reforged version
 folia-supported: true
 
 permissions:
-  toneko.give:
+  toneko.command.give:
+    default: op
+  toneko.command.set:
     default: op

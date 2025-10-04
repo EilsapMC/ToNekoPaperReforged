@@ -8,5 +8,8 @@
   "message_player_not_found": "<red>未找到该玩家!</red>",
   "message_item_not_found_give_command": "<red>未找到该物品!</red>",
   "message_command_wrong_use": "<red>指令用法错误,正常用法如下:</red>",
-  "message_no_permission": "<red>您没有该权限做此事!</red>"
+  "message_no_permission": "<red>您没有该权限做此事!</red>",
+  "message_neko_set_to_a_neko": "<#f5c2e7><player>现在是一只猫娘了喵~</#f5c2e7>",
+  "message_neko_set_to_not_a_neko": "<#f5c2e7><player>现在不再是猫娘了喵呜~</#f5c2e7>",
+  "message_nothing_has_changed": "<#f5c2e7>什么都没有改变喵~</#f5c2e7>"
 }

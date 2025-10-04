@@ -2,13 +2,11 @@ package suki.mrhua269.tnbr.item
 
 import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.inventory.meta.ItemMeta
 import java.util.concurrent.ConcurrentHashMap
 
 object ItemRegistryManager : Listener {
@@ -16,7 +14,6 @@ object ItemRegistryManager : Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     fun onPlayerInteractEvent(playerInteractEvent: PlayerInteractEvent) {
-        val player = playerInteractEvent.player
         val usedItem = playerInteractEvent.item ?: return
         val groupRegistry = ItemRegistryEntry.getGroupIdIfHave(usedItem) ?: return
 
