@@ -8,14 +8,17 @@ import suki.mrhua269.tnbr.i18n.I18NManager
 import suki.mrhua269.tnbr.item.ItemRegistryManager
 import suki.mrhua269.tnbr.item.impl.TestItem
 import suki.mrhua269.tnbr.listeners.NekoPlayerEvents
+import suki.mrhua269.tnbr.metrics.Metrics
 
 class ToNekoBukkitReforged : JavaPlugin() {
     companion object {
         lateinit var instance: ToNekoBukkitReforged
+        lateinit var metrics: Metrics
     }
 
     override fun onEnable() {
         instance = this
+        metrics = Metrics(this, 27461)
 
         this.saveDefaultConfig()
         this.loadLanguageFile()
