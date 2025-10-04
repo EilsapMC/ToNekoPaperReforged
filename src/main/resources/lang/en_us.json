@@ -1,0 +1,15 @@
+{
+  "message_neko_player_prefix": "[<#f5c2e7>Neko</#f5c2e7>]",
+  "message_neko_master_word": "Master",
+  "message_neko_player_chat_format": "<prefix><<player_display_name>><message>",
+  "message_neko_player_chat_meow": "Meow~",
+  "message_hover_event_of_neko_prefix": "Master: <masters>",
+  "message_hover_event_of_neko_no_master": "None",
+  "message_player_not_found": "<red>Player not found!</red>",
+  "message_item_not_found_give_command": "<red>Item not found!</red>",
+  "message_command_wrong_use": "<red>Incorrect command usage. Correct usage:</red>",
+  "message_no_permission": "<red>You do not have permission to do this!</red>",
+  "message_neko_set_to_a_neko": "<#f5c2e7><player> is now a neko meow~</#f5c2e7>",
+  "message_neko_set_to_not_a_neko": "<#f5c2e7><player> is no longer a neko meow~</#f5c2e7>",
+  "message_nothing_has_changed": "<#f5c2e7>Nothing has changed meow~</#f5c2e7>"
+}
