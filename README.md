@@ -1,6 +1,9 @@
 # ToNekoBukkitReforged
 一个可以把玩家变成猫娘的<del>Bukkit</dev>Paper插件(兼容Folia)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/EilsapMC/ToNekoBukkitReforged)
+
+
 ## 功能
 <del>(还没想好)</del>
 
