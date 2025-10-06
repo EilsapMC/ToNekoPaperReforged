@@ -5,11 +5,7 @@ object I18NManager {
 
     fun loadLanguageData(language: String) {
         val targetFileStream = I18NManager::class.java.classLoader.getResourceAsStream("lang/$language.json")
-
-        // not found
-        if (targetFileStream == null) {
-            throw IllegalStateException("Could not found language $language!")
-        }
+            ?: throw IllegalStateException("Could not found language $language!")
 
         val json = targetFileStream.bufferedReader().use { it.readText() }
         instanced = LanguageData.fromJson(json)
