@@ -52,12 +52,14 @@ class NekoPlayerBindTask(
     }
 
     internal fun prepareNekoStats() {
-        // set to max health of neko player
-        val attributeInstanceOfMaxHealth = this.player.getAttribute(Attribute.MAX_HEALTH)
+        if (ToNekoBukkitReforged.config.enableIndependentHealthPoint) {
+            // set to max health of neko player
+            val attributeInstanceOfMaxHealth = this.player.getAttribute(Attribute.MAX_HEALTH)
 
-        if (attributeInstanceOfMaxHealth != null) {
-            this.oldMaxHealth = attributeInstanceOfMaxHealth.baseValue
-            attributeInstanceOfMaxHealth.baseValue = ConstantPool.NEKO_PLAYER_MAX_HEALTH
+            if (attributeInstanceOfMaxHealth != null) {
+                this.oldMaxHealth = attributeInstanceOfMaxHealth.baseValue
+                attributeInstanceOfMaxHealth.baseValue = ConstantPool.NEKO_PLAYER_MAX_HEALTH
+            }
         }
     }
 
@@ -67,17 +69,19 @@ class NekoPlayerBindTask(
         // reset max health to default
         val attributeInstanceOfMaxHealth = this.player.getAttribute(Attribute.MAX_HEALTH)
 
-        if (attributeInstanceOfMaxHealth != null) {
+        if (attributeInstanceOfMaxHealth != null && ToNekoBukkitReforged.config.enableIndependentHealthPoint) {
             attributeInstanceOfMaxHealth.baseValue = this.oldMaxHealth
         }
     }
 
     internal fun tickPotionEffect() {
-        val nightVisionEffect = PotionEffectType.NIGHT_VISION
-        val duration = 1000
-        val amplifier = 4
+        if (ToNekoBukkitReforged.config.enableNightVisionPoison) {
+            val nightVisionEffect = PotionEffectType.NIGHT_VISION
+            val duration = 1000
+            val amplifier = 4
 
-        val potionEffect = PotionEffect(nightVisionEffect, duration, amplifier, false, false)
-        this.player.addPotionEffect(potionEffect)
+            val potionEffect = PotionEffect(nightVisionEffect, duration, amplifier, false, false)
+            this.player.addPotionEffect(potionEffect)
+        }
     }
 }

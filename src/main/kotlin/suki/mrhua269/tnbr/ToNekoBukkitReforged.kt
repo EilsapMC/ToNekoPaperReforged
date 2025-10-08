@@ -14,6 +14,21 @@ class ToNekoBukkitReforged : JavaPlugin() {
     companion object {
         lateinit var instance: ToNekoBukkitReforged
         lateinit var metrics: Metrics
+        lateinit var config: Config
+    }
+
+    data class Config(
+        val enableNightVisionPoison: Boolean,
+        val enableIndependentHealthPoint: Boolean,
+        val enableCreeperTargetingPrevent: Boolean
+    )
+
+    fun loadOtherConfig() {
+        Companion.config = Config(
+            enableNightVisionPoison = this.config.getBoolean("player_settings.neko.enable_night_vision_poison"),
+            enableIndependentHealthPoint = this.config.getBoolean("player_settings.neko.enable_independent_health_point"),
+            enableCreeperTargetingPrevent = this.config.getBoolean("player_settings.neko.enable_creeper_targeting_prevent")
+        )
     }
 
     override fun onEnable() {
@@ -21,6 +36,7 @@ class ToNekoBukkitReforged : JavaPlugin() {
         metrics = Metrics(this, 27461)
 
         this.saveDefaultConfig()
+        this.loadOtherConfig()
         this.loadLanguageFile()
         this.registerCommands()
 

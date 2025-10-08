@@ -1,1 +1,6 @@
 language: "zh_cn"
+player_settings:
+  neko:
+    enable_night_vision_poison: true
+    enable_independent_health_point: true
+    enable_creeper_targeting_prevent: true

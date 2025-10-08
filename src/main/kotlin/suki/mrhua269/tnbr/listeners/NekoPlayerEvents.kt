@@ -18,6 +18,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityTargetEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import suki.mrhua269.tnbr.ToNekoBukkitReforged
 import suki.mrhua269.tnbr.i18n.I18NManager
 import suki.mrhua269.tnbr.storage.NekoPlayerData
 import suki.mrhua269.tnbr.tasks.NekoPlayerBindTask
@@ -176,7 +177,7 @@ object NekoPlayerEvents : Listener{
         val targetEntity = event.target
 
         targetEntity?.let {
-            if (targetReason == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
+            if (targetReason == EntityTargetEvent.TargetReason.CLOSEST_PLAYER && ToNekoBukkitReforged.config.enableCreeperTargetingPrevent) {
                 val player = targetEntity as Player
                 val playerNekoData = player.getPlayerNekoData()
 
