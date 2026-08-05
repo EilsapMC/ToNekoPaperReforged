@@ -2,12 +2,15 @@ package suki.mrhua269.tnbr.item.impl
 
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
+import org.bukkit.inventory.ShapedRecipe
+import org.bukkit.inventory.ShapelessRecipe
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataContainer
 import suki.mrhua269.tnbr.i18n.I18NManager
@@ -46,7 +49,15 @@ class NekoGoldenAppleItem: ItemRegistryEntry() {
         val nekoData = player.getPlayerNekoData()
 
         if (nekoData.trySetNeko(true)) {
+            // successfully promoted
             player.playSound(player, Sound.ENTITY_CAT_AMBIENT, 1f, 1f)
+            player.spawnParticle(Particle.EXPLOSION, player.location, 1)
+
+            return
+        }
+
+        if (nekoData.trySetNeko(false)) {
+            player.playSound(player, Sound.ENTITY_CAT_HURT, 1f, 1f)
             player.spawnParticle(Particle.EXPLOSION, player.location, 1)
         }
     }
@@ -57,7 +68,18 @@ class NekoGoldenAppleItem: ItemRegistryEntry() {
     ) {
     }
 
-    override fun getRecipe(): Recipe? {
-        return null
+    override fun getRecipe(): Recipe {
+        val ret = ShapedRecipe(NamespacedKey.fromString(this.getRegistryId())!!, this.createItem0())
+
+        ret.shape(
+            "R", "R", "R",
+            "R" ,"G" ,"R",
+            "R" ,"R", "R"
+        )
+
+        ret.setIngredient('G', Material.ENCHANTED_GOLDEN_APPLE)
+        ret.setIngredient('R', Material.END_ROD)
+
+        return ret
     }
 }
