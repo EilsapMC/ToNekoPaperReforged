@@ -1,6 +1,7 @@
 package suki.mrhua269.tnbr.listeners
 
 import io.papermc.paper.chat.ChatRenderer
+import io.papermc.paper.event.player.AbstractChatEvent
 import io.papermc.paper.event.player.AsyncChatEvent
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -28,83 +29,8 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.function.Function
 
 object NekoPlayerEvents : Listener{
-    private val playerChatRenderNeko = PlayerChatRenderNeko()
     private val playerNekoDataCachedMap : MutableMap<UUID, NekoPlayerData> = ConcurrentHashMap()
     private val playerNekoBindTasks: MutableMap<UUID, NekoPlayerBindTask> = ConcurrentHashMap()
-
-    class PlayerChatRenderNeko : ChatRenderer {
-        override fun render(
-            source: Player,
-            sourceDisplayName: Component,
-            message: Component,
-            viewer: Audience
-        ): Component {
-            val languageData = I18NManager.getLanguageData()
-            val playerNekoPlayerData = source.getPlayerNekoData()
-
-            var replaceConfigBuilder = TextReplacementConfig.builder()
-            var shouldReplace = false
-            var masters = ""
-
-            // this would be thread safe as we will copy the owners for each modification
-            for (ownerUUID in playerNekoPlayerData.owners) {
-                val target = Bukkit.getOfflinePlayer(ownerUUID)
-
-                // skip if missing
-                if (target.name != null && target.name!!.isBlank() ) continue
-
-                target.name?.let {
-                    shouldReplace = true
-                    // add to its master list will be present in the hover message
-                    masters += (it + "\t")
-
-                    // replace with master word
-                    replaceConfigBuilder = replaceConfigBuilder.matchLiteral(it)
-                }
-            }
-
-            var replaced = message
-            // if we detected the owner's name in its chat message
-            if (shouldReplace) {
-                // meow?
-                replaceConfigBuilder.replacement(languageData.messageMasterWord)
-
-                val builtReplaceConfig = replaceConfigBuilder.build()
-                replaced = replaced.replaceText(builtReplaceConfig)
-            }
-
-            // append meow suffix
-            val builtMessage = replaced
-                .append(Component.text(languageData.messageNekoPlayerMeow))
-
-            // build master list component
-            val mastersComponent = masters.let {
-                if (it.isBlank()) {
-                    return@let Component.text(languageData.messageHoverEventOfNekoNoMaster)
-                }
-
-                return@let Component.text(it)
-            }
-
-            // we need process its prefix from mini message to a true component
-            val processedHoverMessage = MiniMessage.miniMessage().deserialize(
-                languageData.messageHoverEventOfNekoPrefix,
-                Placeholder.component("masters", mastersComponent)
-            )
-            val processedPrefix = MiniMessage.miniMessage()
-                .deserialize(languageData.messageNekoPlayerPrefix)
-                .hoverEvent(HoverEvent.showText(processedHoverMessage))
-
-            val result = MiniMessage.miniMessage().deserialize(
-                languageData.messageNekoPlayerChatFormat,
-                Placeholder.component("prefix", processedPrefix),
-                Placeholder.component("player_display_name", sourceDisplayName),
-                Placeholder.component("message", builtMessage)
-            )
-
-            return result
-        }
-    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerJoinEvent(event: PlayerJoinEvent) {
@@ -159,8 +85,8 @@ object NekoPlayerEvents : Listener{
         }
     }
 
-    @EventHandler
-    fun onPlayerChat(event: AsyncChatEvent) {
+    @EventHandler(priority = EventPriority.LOW)
+    fun onPlayerChat(event: AbstractChatEvent) {
         val nekoPlayerData = event.player.getPlayerNekoData()
 
         // skip chat message replacement for non neko players
@@ -168,7 +94,71 @@ object NekoPlayerEvents : Listener{
             return
         }
 
-        event.renderer(this.playerChatRenderNeko)
+        val source = event.player;
+        val languageData = I18NManager.getLanguageData()
+        val playerNekoPlayerData = source.getPlayerNekoData()
+
+        var replaceConfigBuilder = TextReplacementConfig.builder()
+        var shouldReplace = false
+        var masters = ""
+
+        // this would be thread safe as we will copy the owners for each modification
+        for (ownerUUID in playerNekoPlayerData.owners) {
+            val target = Bukkit.getOfflinePlayer(ownerUUID)
+
+            // skip if missing
+            if (target.name != null && target.name!!.isBlank() ) continue
+
+            target.name?.let {
+                shouldReplace = true
+                // add to its master list will be present in the hover message
+                masters += (it + "\t")
+
+                // replace with master word
+                replaceConfigBuilder = replaceConfigBuilder.matchLiteral(it)
+            }
+        }
+
+        var replaced = event.message();
+        // if we detected the owner's name in its chat message
+        if (shouldReplace) {
+            // meow?
+            replaceConfigBuilder.replacement(languageData.messageMasterWord)
+
+            val builtReplaceConfig = replaceConfigBuilder.build()
+            replaced = replaced.replaceText(builtReplaceConfig)
+        }
+
+        // append meow suffix
+        val builtMessage = replaced
+            .append(Component.text(languageData.messageNekoPlayerMeow))
+
+        // build master list component
+        val mastersComponent = masters.let {
+            if (it.isBlank()) {
+                return@let Component.text(languageData.messageHoverEventOfNekoNoMaster)
+            }
+
+            return@let Component.text(it)
+        }
+
+        // we need process its prefix from mini message to a true component
+        val processedHoverMessage = MiniMessage.miniMessage().deserialize(
+            languageData.messageHoverEventOfNekoPrefix,
+            Placeholder.component("masters", mastersComponent)
+        )
+        val processedPrefix = MiniMessage.miniMessage()
+            .deserialize(languageData.messageNekoPlayerPrefix)
+            .hoverEvent(HoverEvent.showText(processedHoverMessage))
+
+        val result = MiniMessage.miniMessage().deserialize(
+            languageData.messageNekoPlayerChatFormat,
+            Placeholder.component("prefix", processedPrefix),
+            Placeholder.component("player_display_name", source.displayName()),
+            Placeholder.component("message", builtMessage)
+        )
+
+        event.message(result)
     }
 
     @EventHandler
