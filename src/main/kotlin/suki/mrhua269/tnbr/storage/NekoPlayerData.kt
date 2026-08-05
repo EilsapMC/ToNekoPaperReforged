@@ -37,6 +37,18 @@ class NekoPlayerData {
         return this
     }
 
+    fun trySetNeko(newVal: Boolean): Boolean {
+        // fast path
+        if (this.isNeko == newVal) return false
+
+        synchronized(this) {
+            if (this.isNeko == newVal) return false
+
+            this.isNeko = newVal
+            return true
+        }
+    }
+
     @Synchronized
     fun addOwner(uuid: UUID): NekoPlayerData {
         this.owners += uuid

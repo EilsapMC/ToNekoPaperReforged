@@ -3,6 +3,7 @@ package suki.mrhua269.tnbr.item
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
 import org.bukkit.inventory.meta.ItemMeta
@@ -47,6 +48,8 @@ abstract class ItemRegistryEntry {
     abstract fun getCustomItemMeta(item: ItemStack): ItemMeta?
 
     abstract fun onUse(interactEvent: PlayerInteractEvent)
+
+    abstract fun onConsume(consumeEvent: PlayerItemConsumeEvent)
 
     abstract fun fillItemData(container: PersistentDataContainer, item: ItemStack)
 

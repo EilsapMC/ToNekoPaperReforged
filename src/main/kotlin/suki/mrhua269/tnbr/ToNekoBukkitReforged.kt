@@ -6,6 +6,7 @@ import suki.mrhua269.tnbr.command.impl.ToNekoGiveCommand
 import suki.mrhua269.tnbr.command.impl.ToNekoSetNekoCommand
 import suki.mrhua269.tnbr.i18n.I18NManager
 import suki.mrhua269.tnbr.item.ItemRegistryManager
+import suki.mrhua269.tnbr.item.impl.NekoGoldenAppleItem
 import suki.mrhua269.tnbr.item.impl.TestItem
 import suki.mrhua269.tnbr.listeners.NekoPlayerEvents
 import suki.mrhua269.tnbr.metrics.Metrics
@@ -55,6 +56,7 @@ class ToNekoBukkitReforged : JavaPlugin() {
 
     private fun bootstrapItems() {
         ItemRegistryManager.registerItem(TestItem())
+        ItemRegistryManager.registerItem(NekoGoldenAppleItem())
     }
 
     private fun loadLanguageFile() {

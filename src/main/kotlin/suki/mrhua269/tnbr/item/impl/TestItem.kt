@@ -8,6 +8,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.inventory.ItemFactory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.Recipe
@@ -34,6 +35,10 @@ class TestItem: ItemRegistryEntry() {
         val location = interactEvent.player.location
 
         location.world.spawnParticle(Particle.HEART, location, 10, 2.0, 2.0, 2.0)
+    }
+
+    override fun onConsume(consumeEvent: PlayerItemConsumeEvent) {
+        // no-op
     }
 
     override fun fillItemData(

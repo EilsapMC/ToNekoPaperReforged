@@ -34,7 +34,10 @@ data class LanguageData(
     val messageNekoSetToNotANeko: String,
     @SerializedName("message_nothing_has_changed")
     val messageNothingHasChanged: String,
-
+    @SerializedName("constants_neko_golden_apple_name")
+    val constantNekoGoldenAppleName: String,
+    @SerializedName("constants_neko_golden_apple_lore")
+    val constantNekoGoldenAppleLore: String,
 ) {
     companion object {
         val GSON: Gson = GsonBuilder().setPrettyPrinting().create()

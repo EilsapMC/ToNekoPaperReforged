@@ -1,7 +1,7 @@
 {
   "message_neko_player_prefix": "[<#f5c2e7>猫娘</#f5c2e7>]",
   "message_neko_master_word": "主人",
-  "message_neko_player_chat_format": "<prefix><<player_display_name>><message>",
+  "message_neko_player_chat_format": "<#f5c2e7><message></#f5c2e7>",
   "message_neko_player_chat_meow": "喵~",
   "message_hover_event_of_neko_prefix": "主人: <masters>",
   "message_hover_event_of_neko_no_master": "无",
@@ -11,5 +11,7 @@
   "message_no_permission": "<red>您没有该权限做此事!</red>",
   "message_neko_set_to_a_neko": "<#f5c2e7><player>现在是一只猫娘了喵~</#f5c2e7>",
   "message_neko_set_to_not_a_neko": "<#f5c2e7><player>现在不再是猫娘了喵呜~</#f5c2e7>",
-  "message_nothing_has_changed": "<#f5c2e7>什么都没有改变喵~</#f5c2e7>"
+  "message_nothing_has_changed": "<#f5c2e7>什么都没有改变喵~</#f5c2e7>",
+  "constants_neko_golden_apple_name": "<#f5c2e7>猫娘果</#f5c2e7>",
+  "constants_neko_golden_apple_lore": "<#cba6f7>神奇的苹果,貌似吃了会有什么神秘效果喵</#cba6f7>"
 }

@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.inventory.ItemStack
 import java.util.concurrent.ConcurrentHashMap
 
@@ -20,6 +21,16 @@ object ItemRegistryManager : Listener {
         val lookedup = this.managedRegistryEntries[groupRegistry] ?: return
 
         lookedup.onUse(playerInteractEvent)
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    fun onPlayerConsumeEvent(playerConsumeEvent: PlayerItemConsumeEvent) {
+        val usedItem = playerConsumeEvent.item ?: return
+        val groupRegistry = ItemRegistryEntry.getGroupIdIfHave(usedItem) ?: return
+
+        val lookedup = this.managedRegistryEntries[groupRegistry] ?: return
+
+        lookedup.onConsume(playerConsumeEvent)
     }
 
     fun registerItem(entry: ItemRegistryEntry) {

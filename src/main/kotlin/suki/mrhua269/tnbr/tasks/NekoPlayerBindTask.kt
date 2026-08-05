@@ -1,12 +1,18 @@
 package suki.mrhua269.tnbr.tasks
 
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.event.HoverEvent
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import org.bukkit.Bukkit
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import suki.mrhua269.tnbr.ConstantPool
 import suki.mrhua269.tnbr.ToNekoBukkitReforged
+import suki.mrhua269.tnbr.i18n.I18NManager
 import suki.mrhua269.tnbr.listeners.NekoPlayerEvents.getPlayerNekoData
 import java.util.function.Consumer
 
@@ -16,6 +22,7 @@ class NekoPlayerBindTask(
     private var scheduledTask: ScheduledTask? = null
     private var isNekoBefore: Boolean = false
     private var oldMaxHealth = 0.0
+    private var displayNameInited: Boolean = false
 
     fun schedule() {
         this.scheduledTask = this.player.scheduler.runAtFixedRate(
