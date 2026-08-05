@@ -72,9 +72,9 @@ class NekoGoldenAppleItem: ItemRegistryEntry() {
         val ret = ShapedRecipe(NamespacedKey.fromString(this.getRegistryId())!!, this.createItem0())
 
         ret.shape(
-            "R", "R", "R",
-            "R" ,"G" ,"R",
-            "R" ,"R", "R"
+            "RRR",
+            "RGR",
+            "RRR"
         )
 
         ret.setIngredient('G', Material.ENCHANTED_GOLDEN_APPLE)
